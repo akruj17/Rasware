@@ -9,6 +9,20 @@ int main(void) {
 
     tADC *dist = InitializeADC(PIN_xx);
     // Replace PIN_xx with an actual pin
+    // ADC is only supported on a limited number of pins in hardware
+// The following pins are supported:
+// PIN_B4
+// PIN_B5
+// PIN_D0
+// PIN_D1
+// PIN_D2
+// PIN_D3
+// PIN_E0
+// PIN_E1
+// PIN_E2
+// PIN_E3
+// PIN_E4
+// PIN_E5
 float distval;
     while (1) {
       distval = ADCRead(dist);
