@@ -62,7 +62,7 @@ int main(void) {
     float error;
     float percentError;
     //float allError = 0;
-    float desired = 0.20;
+    float desired = 0.40;
     float kp;
     //float ki;
     tADC *IRRight = InitializeADC(PIN_D0);
@@ -74,8 +74,8 @@ int main(void) {
     while (1) {
         // //Continuous Servo Motor V(left, 0) = V(right0.258)
         // // speed = changing k * speed(set)
-        setLeftMoterSpeed(0.5);  //< -0.3: backward
-        setRightMoterSpeed(0.5); // 0; 0.3
+        setLeftMoterSpeed(0.8);  //< -0.3: backward
+        setRightMoterSpeed(0.8); // 0; 0.3
         //
         //
         // IRSensor
@@ -84,7 +84,7 @@ int main(void) {
         readIRRight = ADCRead(IRRight);
         error = readIRRight - desired;
         // percentError from -1 to 4; when error = 0, percentError = 0
-        percentError = error / desired - 1.5;
+        percentError = error / desired - 0.5;
         // percent Error from -4 to 4; when error = 0, percentError = 0
         kp = 1 + fabs(0.4 * percentError);
         //output = error * kp;
