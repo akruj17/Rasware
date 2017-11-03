@@ -42,73 +42,78 @@ int main(void) {
 
     //Continuous Servo Motor; true and false make motors
     //turn into opposite directions.
-    leftMotor = InitializeServoMotor(PIN_B1, false); //forward with false
-    rightMotor = InitializeServoMotor(PIN_D1, true);  // forward
+    leftMotor = InitializeServoMotor(PIN_E4, false); //forward with false
+    rightMotor = InitializeServoMotor(PIN_E5, true);  // forward
 
-    //Micro Servo Motor
-    //tServo *servo = InitializeServo(PIN_XX);
-
-    //LineSensor
-    //tLineSensor *line = InitializeGPIOLineSensor(PIN_B0, PIN_B1, PIN_E4, PIN_E5, PIN_B4, PIN_A5, PIN_A6, PIN_A7);
-    //float value[8];
-
-    //Infrared Distance Sensor
+    // Micro Servo Motor
+    // tServo *servo = InitializeServo(PIN_XX);
+    //
+    // LineSensor
+    // tLineSensor *line = InitializeGPIOLineSensor(PIN_B0, PIN_B1, PIN_E4, PIN_E5, PIN_B4, PIN_A5, PIN_A6, PIN_A7);
+    // float value[8];
+    //
+    // Infrared Distance Sensor
     // ADC is only supported on a limited number of pins in hardware
     // The following pins are supported:
     // PIN_B4 PIN_B5 PIN_D0  PIN_D1   PIN_D2  PIN_D3  PIN_E0
     // PIN_E1  PIN_E2  PIN_E3  PIN_E4  PIN_E5
-    // tADC *IRLeft = InitializeADC(PIN_D1);
+    //tADC *IRLeft = InitializeADC(PIN_D1);
     float readIRLeft;
     float error;
+    float percentError;
     //float allError = 0;
     float desired = 0.20;
-    //float kp = 10;
+    float kp;
     //float ki;
     tADC *IRRight = InitializeADC(PIN_D0);
     float readIRRight;
     float output;
 
+
+
     while (1) {
-        //Continuous Servo Motor V(left, 0) = V(right0.258)
-        // speed = changing k * speed(set)
-        setLeftMoterSpeed(0);  //< -0.3: backward
-        setRightMoterSpeed(0.3);
-
-
+        // //Continuous Servo Motor V(left, 0) = V(right0.258)
+        // // speed = changing k * speed(set)
+        setLeftMoterSpeed(0.5);  //< -0.3: backward
+        setRightMoterSpeed(0.5); // 0; 0.3
+        //
+        //
         // IRSensor
         // readIRLeft = ADCRead(IRLeft);
         // Printf("IR Sensor1 value is %f\n", readIRLeft);
         readIRRight = ADCRead(IRRight);
         error = readIRRight - desired;
+        // percentError from -1 to 4; when error = 0, percentError = 0
+        percentError = error / desired - 1.5;
+        // percent Error from -4 to 4; when error = 0, percentError = 0
+        kp = 1 + fabs(0.25 * percentError);
         //output = error * kp;
-
-        if (error > 0 ){
-          setLeftMoterSpeed(-0.4);
-          setRightMoterSpeed(0.3);
+        if (error > 0.1){
+          setLeftMoterSpeed(-0.2 * kp); // -0.4
+          setRightMoterSpeed(0.5 * kp);
         }
-        else if (error < 0 ){
-          setLeftMoterSpeed(0);
-          setRightMoterSpeed(0.25); //0.2
+        else if (error < -0.1){
+          setLeftMoterSpeed(0.5 * kp);
+          setRightMoterSpeed(-0.2 * kp); //0.2
         }
-
-        if (error < 0){
-          Printf("The error is %f,    too far.\n", error);
-        }
-        else {
-          Printf("The error is %f,    too close.\n", error);
-        }
-        Wait(0.5);
+        // if (error < 0){
+        //   Printf("The error is %f,    too far.\n", error);
+        // }
+        // else {
+        //   Printf("The error is %f,    too close.\n", error);
+        // }
+        Wait(0.01);
 
         // Micro Servo Motor
         // float a;
-        //for (a = 0.0; a < 1.0; a += 0.1){
-          //SetServo(servo, a);
-          //wait(0.5);
-        //}
-        //for (a = 1.0; a > 0.0; a _= 0.1){
-          //SetServo(servo, a);
-          //wait(0.5);
-        //}
+        // for (a = 0.0; a < 1.0; a += 0.1){
+        //   SetServo(servo, a);
+        //   wait(0.5);
+        // }
+        // for (a = 1.0; a > 0.0; a _= 0.1){
+        //   SetServo(servo, a);
+        //   wait(0.5);
+        // }
 
         //LineSensor
         //LineSensorReadArray(line, value);
