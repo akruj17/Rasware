@@ -84,27 +84,15 @@ int main(void) {
         readIRRight = ADCRead(IRRight);
         error = readIRRight - desired;
         // percentError from -1 to 4; when error = 0, percentError = 0
-<<<<<<< HEAD
         percentError = error / desired - 1.5;
         // percent Error from -4 to 4; when error = 0, percentError = 0
-=======
-        percentError = error / desired;
-        // percent Error from -4 to 4; when error = 0, percentError = 0
-        if (percentError < 0) {
-          percentError *= 4;
-        }
->>>>>>> 103129117f39cc54bf55a89f4c2b53d40cb75118
-        kp = 1 + fabs(0.25 * percentError);
+        kp = 1 + fabs(0.4 * percentError);
         //output = error * kp;
         if (error > 0.1){
           setLeftMoterSpeed(-0.2 * kp); // -0.4
           setRightMoterSpeed(0.5 * kp);
         }
-<<<<<<< HEAD
         else if (error < -0.1){
-=======
-        else if (error < 0.1){
->>>>>>> 103129117f39cc54bf55a89f4c2b53d40cb75118
           setLeftMoterSpeed(0.5 * kp);
           setRightMoterSpeed(-0.2 * kp); //0.2
         }
@@ -114,11 +102,7 @@ int main(void) {
         // else {
         //   Printf("The error is %f,    too close.\n", error);
         // }
-<<<<<<< HEAD
         Wait(0.01);
-=======
-        Wait(0.5);
->>>>>>> 103129117f39cc54bf55a89f4c2b53d40cb75118
 
         // Micro Servo Motor
         // float a;
