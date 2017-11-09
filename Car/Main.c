@@ -57,13 +57,16 @@ int main(void) {
     // The following pins are supported:
     // PIN_B4 PIN_B5 PIN_D0  PIN_D1   PIN_D2  PIN_D3  PIN_E0
     // PIN_E1  PIN_E2  PIN_E3  PIN_E4  PIN_E5
-    //tADC *IRLeft = InitializeADC(PIN_D1);
+    tADC *IRLeft = InitializeADC(PIN_D1);
     float readIRLeft;
     float error;
+    float errorLeft;
     float percentError;
+    float percentErrorLeft;
     //float allError = 0;
     float desired = 0.40;
     float kp;
+    float kpLeft;
     //float ki;
     tADC *IRRight = InitializeADC(PIN_D0);
     float readIRRight;
@@ -79,27 +82,41 @@ int main(void) {
         //
         //
         // IRSensor
-        // readIRLeft = ADCRead(IRLeft);
+        readIRLeft = ADCRead(IRLeft);
         // Printf("IR Sensor1 value is %f\n", readIRLeft);
         readIRRight = ADCRead(IRRight);
         error = readIRRight - desired;
+        errorLeft= readIRLeft - desired;
         // percentError from -1 to 4; when error = 0, percentError = 0
         percentError = error / desired - 0.5;
+        percentErrorLeft= errorLeft/ desired- 0.5;
         // percent Error from -4 to 4; when error = 0, percentErro
         kp = 1 + fabs(0.4 * percentError);
+        kpLeft= 1+ fabs(0.4* percentErrorLeft);
 
         //-.1<x<.1 ideal Distance
-        //too far
+        //too close
         if (error > 0.1){
           setLeftMoterSpeed(-0.2 * kp); // -0.4
           setRightMoterSpeed(0.5 * kp);
         }
-        // too close?
+        // too far?
         else if (error < -0.1){
           setLeftMoterSpeed(0.5 * kp);
           setRightMoterSpeed(-0.2 * kp); //0.2
         }
 
+        // too close
+        if (errorLeft> 0.1){
+          setLeftMoterSpeed(0.5 * kp);
+          setRightMoterSpeed(-0.2 * kp); //0.2
+        }
+
+        // too far
+        else if (errorLeft< -0.1){
+          setLeftMoterSpeed(-0.2 * kp); // -0.4
+          setRightMoterSpeed(0.5 * kp);
+        }
         Wait(0.01);
 
 
