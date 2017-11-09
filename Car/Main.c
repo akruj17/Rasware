@@ -85,6 +85,7 @@ int main(void) {
         readIRLeft = ADCRead(IRLeft);
          Printf("IR Sensor1 value is %f\n", readIRLeft);
         readIRRight = ADCRead(IRRight);
+           Printf("IR Sensor1 value is %f\n", readIRLeft);
         error = readIRRight - desired;
         errorLeft= readIRLeft - desired;
         // percentError from -1 to 4; when error = 0, percentError = 0
