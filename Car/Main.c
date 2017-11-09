@@ -85,35 +85,23 @@ int main(void) {
         error = readIRRight - desired;
         // percentError from -1 to 4; when error = 0, percentError = 0
         percentError = error / desired - 0.5;
-        // percent Error from -4 to 4; when error = 0, percentError = 0
+        // percent Error from -4 to 4; when error = 0, percentErro
         kp = 1 + fabs(0.4 * percentError);
-        //output = error * kp;
+
+        //-.1<x<.1 ideal Distance
+        //too far
         if (error > 0.1){
           setLeftMoterSpeed(-0.2 * kp); // -0.4
           setRightMoterSpeed(0.5 * kp);
         }
+        // too close?
         else if (error < -0.1){
           setLeftMoterSpeed(0.5 * kp);
           setRightMoterSpeed(-0.2 * kp); //0.2
         }
-        // if (error < 0){
-        //   Printf("The error is %f,    too far.\n", error);
-        // }
-        // else {
-        //   Printf("The error is %f,    too close.\n", error);
-        // }
+
         Wait(0.01);
 
-        // Micro Servo Motor
-        // float a;
-        // for (a = 0.0; a < 1.0; a += 0.1){
-        //   SetServo(servo, a);
-        //   wait(0.5);
-        // }
-        // for (a = 1.0; a > 0.0; a _= 0.1){
-        //   SetServo(servo, a);
-        //   wait(0.5);
-        // }
 
         //LineSensor
         //LineSensorReadArray(line, value);
