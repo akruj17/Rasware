@@ -83,7 +83,7 @@ int main(void) {
         //
         // IRSensor
         readIRLeft = ADCRead(IRLeft);
-        // Printf("IR Sensor1 value is %f\n", readIRLeft);
+         Printf("IR Sensor1 value is %f\n", readIRLeft);
         readIRRight = ADCRead(IRRight);
         error = readIRRight - desired;
         errorLeft= readIRLeft - desired;
