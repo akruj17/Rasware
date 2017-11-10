@@ -139,7 +139,8 @@ int main(void) {
         //LineSensor
         int max1 = 0;
         int max2 = 0;
-        int index1, index2, sum;
+        int index1, index2;
+        int sum = 0;
         LineSensorReadArray(line, value);
         // find Max
         // for (int i = 0; i <= 7; i++){
@@ -166,7 +167,7 @@ int main(void) {
         // // reset value
         //
         int weight[8] = {-4,-3,-2,-1,1,2,3,4};
-        int outputArr[8];
+        int outputArr[8] = {0};
         for (int i=0; i<8; i++){
           if (value[i] == INFINITY){
             value[i] = 1;
@@ -185,9 +186,8 @@ int main(void) {
         // setRightMoterSpeed(0.8 - 0.04 * sum);
 
         //Printf("%d\n", sum);
-        Printf("%d\n", sum);
-  //       Printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n", value[0], value[1], value[2],
-  // value[3], value[4], value[5], value[6], value[7]);
+         Printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t\n", outputArr[0],outputArr[1],outputArr[2],
+                outputArr[3],outputArr[4],outputArr[5],outputArr[6],outputArr[7]);
         //Wait(0.01);
         Wait(0.5);
     }
