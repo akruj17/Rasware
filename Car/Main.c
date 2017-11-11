@@ -30,8 +30,8 @@ int main(void) {
 
     //Continuous Servo Motor; true and false make motors
     //turn into opposite directions.
-    // leftMotor = InitializeServoMotor(PIN_F4, false); //forward with false
-    // rightMotor = InitializeServoMotor(PIN_D7, true);  // forward
+    leftMotor = InitializeServoMotor(PIN_D7, false); //forward with false
+    rightMotor = InitializeServoMotor(PIN_F4, true);  // forward
 
     //
     //LineSensor
@@ -57,10 +57,8 @@ int main(void) {
     int flag = 0;
 
     while (1) {
-        // //Continuous Servo Motor V(left, 0) = V(right0.258)
-        // // speed = changing k * speed(set)
-        // setLeftMoterSpeed(0.8);  //< -0.3: backward
-        // setRightMoterSpeed(0.8); // 0; 0.3
+        setLeftMoterSpeed(0.2);   // 0.8 with IRsensor,  0.3 with linesensor
+        setRightMoterSpeed(0.2);
         //
         //
         // readIRLeft = ADCRead(IRLeft);
@@ -182,13 +180,15 @@ int main(void) {
         for (int i = 0; i <= 7; i++){
           sum += outputArr[i];
         }
-        // setLeftMoterSpeed(0.8 + 0.04 * sum);
-        // setRightMoterSpeed(0.8 - 0.04 * sum);
+        setLeftMoterSpeed(0.2 + 0.04 * sum);
+        setRightMoterSpeed(0.2 - 0.04 * sum);
 
         //Printf("%d\n", sum);
+        // Printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n", value[0],value[1],value[2],
+        //      value[3],value[4],value[5],value[6],value[7]);
          Printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t\n", outputArr[0],outputArr[1],outputArr[2],
-                outputArr[3],outputArr[4],outputArr[5],outputArr[6],outputArr[7]);
+                 outputArr[3],outputArr[4],outputArr[5],outputArr[6],outputArr[7]);
         //Wait(0.01);
-        Wait(0.5);
+        Wait(0.05);
     }
 }
