@@ -57,9 +57,76 @@ int main(void) {
     int flag = 0;
 
     while (1) {
-        setLeftMoterSpeed(0.2);   // 0.8 with IRsensor,  0.3 with linesensor
-        setRightMoterSpeed(0.2);
+        setLeftMoterSpeed(1.0);   //0.8
+        setRightMoterSpeed(1.0);
         //
+
+        // //LineSensor
+        int sum = 0;
+        LineSensorReadArray(line, value);
+        // find Max
+        // for (int i = 0; i <= 7; i++){
+        //   if (value[i] >= max1) {
+        //     max1 = value[i];
+        //     index1 = i;
+        //   }
+        // }
+        // // find second Max
+        // for (int i = 0; i <= 7; i++){
+        //   if (value[i] >= max2 && value[i] < max1){
+        //     max2 = value[i];
+        //     index2 = i;
+        //   }
+        // }
+        // for (int i = 0; i <= 7; i++){
+        //   if (i == index1 || i == index2){
+        //     value[i] = 1;
+        //   }
+        //   else{
+        //     value[i] = 0;
+        //   }
+        // }
+        // // reset value
+        //
+        int weight[8] = {-4,-3,-2,-1,1,2,3,4};
+        int outputArr[8] = {0};
+        for (int i=0; i<8; i++){
+          if (value[i] == INFINITY){
+            value[i] = 1;
+          }
+          else{
+            value[i] = 0;
+          }
+        }
+        for(int i = 0; i < 8; i++){
+          outputArr[i] = weight[i]*value[i];
+        }
+        for (int i = 0; i <= 7; i++){
+          sum += outputArr[i];
+        }
+        if (sum > 0){
+          setLeftMoterSpeed(0.8 + 0.04 * sum);
+          setRightMoterSpeed(-0.8 - 0.04 * sum);
+        }
+        if (sum < 0){
+          setLeftMoterSpeed(-0.8 - 0.04 * sum);
+          setRightMoterSpeed(0.8 + 0.04 * sum);
+        }
+        if (outputArr[0]==-4&&outputArr[1]==-3&&outputArr[2]==-2&&outputArr[3]==-1&&outputArr[4]==1&&outputArr[5]==2&&outputArr[6]==3&&outputArr[7]==4){
+          setLeftMoterSpeed(0.8);
+          setRightMoterSpeed(0.8);
+          Wait(1.5m);
+          setLeftMoterSpeed(0.8);
+          setRightMoterSpeed(-0.8);
+          Wait(1.0);
+        }
+
+        //Printf("%d\n", sum);
+        // Printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n", value[0],value[1],value[2],
+        //      value[3],value[4],value[5],value[6],value[7]);
+        // Printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t\n", outputArr[0],outputArr[1],outputArr[2],
+        //          outputArr[3],outputArr[4],outputArr[5],outputArr[6],outputArr[7]);
+
         //
         // readIRLeft = ADCRead(IRLeft);
         // errorL = readIRLeft - desired;
@@ -134,61 +201,7 @@ int main(void) {
         // }
 
 
-        //LineSensor
-        int max1 = 0;
-        int max2 = 0;
-        int index1, index2;
-        int sum = 0;
-        LineSensorReadArray(line, value);
-        // find Max
-        // for (int i = 0; i <= 7; i++){
-        //   if (value[i] >= max1) {
-        //     max1 = value[i];
-        //     index1 = i;
-        //   }
-        // }
-        // // find second Max
-        // for (int i = 0; i <= 7; i++){
-        //   if (value[i] >= max2 && value[i] < max1){
-        //     max2 = value[i];
-        //     index2 = i;
-        //   }
-        // }
-        // for (int i = 0; i <= 7; i++){
-        //   if (i == index1 || i == index2){
-        //     value[i] = 1;
-        //   }
-        //   else{
-        //     value[i] = 0;
-        //   }
-        // }
-        // // reset value
-        //
-        int weight[8] = {-4,-3,-2,-1,1,2,3,4};
-        int outputArr[8] = {0};
-        for (int i=0; i<8; i++){
-          if (value[i] == INFINITY){
-            value[i] = 1;
-          }
-          else{
-            value[i] = 0;
-          }
-        }
-        for(int i = 0; i < 8; i++){
-          outputArr[i] = weight[i]*value[i];
-        }
-        for (int i = 0; i <= 7; i++){
-          sum += outputArr[i];
-        }
-        setLeftMoterSpeed(0.2 + 0.04 * sum);
-        setRightMoterSpeed(0.2 - 0.04 * sum);
 
-        //Printf("%d\n", sum);
-        // Printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n", value[0],value[1],value[2],
-        //      value[3],value[4],value[5],value[6],value[7]);
-         Printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t\n", outputArr[0],outputArr[1],outputArr[2],
-                 outputArr[3],outputArr[4],outputArr[5],outputArr[6],outputArr[7]);
-        //Wait(0.01);
-        Wait(0.05);
+        Wait(0.01);
     }
 }
